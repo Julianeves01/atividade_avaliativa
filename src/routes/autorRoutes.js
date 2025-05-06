@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const { generatePdfReportForAutores } = require("../controllers/autorController"); 
 const controller = require("../controllers/autorController");
 const apiKey = require("../middleware/apiKey");
 
 router.use(apiKey); // Middleware para verificar a chave da API
 
-router.get("/", controller.getAllAutors);
+router.get("/", controller.getAllAutores);
 router.get("/:id", controller.getAutor);
 router.post("/", controller.createAutor);
-router.put("/:id", controller.updateAutor); 
-router.delete("/:id", controller.deleteAutor); 
-router.get("/relatorio/pdf", controller.generatePdfReport);
-
-
+router.put("/:id", controller.updateAutor);
+router.delete("/:id", controller.deleteAutor);
+router.get("/relatorio/pdf", generatePdfReportForAutores); 
 module.exports = router;

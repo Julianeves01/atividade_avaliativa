@@ -1,12 +1,13 @@
 require("dotenv").config();
 const express = require("express");
-const router = express.Router();
 const app = express();
 const cors = require("cors");
+const apiKeyMiddleware = require("./src/middleware/apiKey");
 const autorRoutes = require("./src/routes/autorRoutes");
 const livroRoutes = require("./src/routes/livroRoutes");
 
 app.use(cors());
+app.use(apiKeyMiddleware);
 app.use(express.json()); // Middleware para processar JSON
 
 // Rotas

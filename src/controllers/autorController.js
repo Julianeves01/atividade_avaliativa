@@ -48,6 +48,7 @@ const createAutor = async (req, res) => {
 
 const updateAutor = async (req, res) => {
     try {
+        console.log("Corpo da requisição recebido:", req.body); // Log para depuração
         const { id } = req.params;
         const { nome, nacionalidade } = req.body;
 
@@ -66,7 +67,7 @@ const updateAutor = async (req, res) => {
             autor: autorAtualizado
         });
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao atualizar autor:", error);
         res.status(500).json({ error: "Erro ao atualizar autor." });
     }
 };
@@ -75,18 +76,27 @@ const deleteAutor = async (req, res) => {
     try {
         const { id } = req.params;
 
+        console.log(`Tentando excluir autor com ID: ${id}`); 
+
+        if (!id) {
+            return res.status(400).json({ error: "ID do autor é obrigatório." });
+        }
+
         const autorExcluido = await autorModel.deleteAutor(id);
 
         if (!autorExcluido) {
+            console.warn(`Autor com ID ${id} não encontrado para exclusão.`); 
             return res.status(404).json({ message: "Autor não encontrado." });
         }
+
+        console.log(`Autor com ID ${id} excluído com sucesso.`);
 
         res.status(200).json({
             message: "Autor excluído com sucesso!",
             autor: autorExcluido
         });
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao excluir autor:", error); 
         res.status(500).json({ error: "Erro ao excluir autor." });
     }
 };
@@ -115,5 +125,5 @@ module.exports = {
     createAutor,
     updateAutor,
     deleteAutor,
-    generatePdfReport: generatePdfReportForAutores
+    generatePdfReportForAutores, 
 };
