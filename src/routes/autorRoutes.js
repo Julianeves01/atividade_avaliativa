@@ -4,6 +4,7 @@ const { generatePdfReportForAutores } = require("../controllers/autorController"
 const controller = require("../controllers/autorController");
 const apiKey = require("../middleware/apiKey");
 
+
 router.use(apiKey); // Middleware para verificar a chave da API
 
 router.get("/", controller.getAllAutores);

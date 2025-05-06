@@ -1,5 +1,5 @@
 const pool = require("../config/database");
-
+const db = require("../config/database");
 
 const getAutores = async (filtroNome) => {
     let query = `SELECT * FROM autores`;
@@ -12,15 +12,14 @@ const getAutores = async (filtroNome) => {
 
     const result = await pool.query(query, params);
     return result.rows;
+    
 };
-
 
 const getAutorById = async (id_autor) => {
     const query = `SELECT * FROM autores WHERE id_autor = $1`;
     const result = await pool.query(query, [id_autor]);
     return result.rows[0];
 };
-
 
 const createAutor = async ({ nome, nacionalidade }) => {
     const query = `
@@ -45,7 +44,6 @@ const updateAutor = async (id_autor, { nome, nacionalidade }) => {
     return result.rows[0];
 };
 
-
 const deleteAutor = async (id_autor) => {
     const query = `
         DELETE FROM autores
@@ -56,4 +54,21 @@ const deleteAutor = async (id_autor) => {
     return result.rows[0];
 };
 
-module.exports = { getAutores, getAutorById, createAutor, updateAutor, deleteAutor };
+const getAutoresComLivros = async () => {
+    const query = `
+        SELECT autores.*, livros.*
+        FROM autores
+        LEFT JOIN livros ON autores.id_autor = livros.id_autor
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+};
+
+module.exports = { 
+    getAutores, 
+    getAutorById, 
+    createAutor, 
+    updateAutor, 
+    deleteAutor, 
+    getAutoresComLivros 
+};

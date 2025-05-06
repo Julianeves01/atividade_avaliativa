@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const livroController = require("../controllers/livroController");
-const apiKey = require("../middleware/apiKey");
-
-router.use(apiKey); // Middleware para verificar a chave da API
+const Controller = require("../controllers/livroController");
 
 // Rotas de livros
-router.get("/", livroController.getAllLivros); 
-router.get("/:id", livroController.getLivro); 
-router.post("/", livroController.createLivro); 
-router.put("/:id", livroController.updateLivro); 
-router.delete("/:id", livroController.deleteLivro); 
+router.get("/", Controller.getAllLivros); 
+router.get("/:id", Controller.getLivro); 
+router.post("/", Controller.createLivro);
+router.put("/:id", Controller.updateLivro); 
+router.delete("/:id", Controller.deleteLivro); 
 
 module.exports = router;

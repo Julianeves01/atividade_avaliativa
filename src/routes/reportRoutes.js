@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { generatePdfReportForAutores } = require("../controllers/autorController");
-const apiKeyMiddleware = require("../middleware/apiKey"); 
+const apiKeyMiddleware = require("../middleware/apiKey");
 
-// Rota para gerar o relatório de autor em PDF com validação de API Key
+// Rota para gerar o relatório de autores em PDF
 router.get("/relatorio/autores", apiKeyMiddleware, generatePdfReportForAutores);
 
 module.exports = router;

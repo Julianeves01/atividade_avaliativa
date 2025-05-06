@@ -3,21 +3,34 @@ const autorModel = require("../models/autorModel");
 
 const createLivro = async (req, res) => {
     try {
-        console.log("Dados recebidos:", req.body);
+        console.log("Dados recebidos:", req.body); // Log dos dados recebidos
         const { titulo, ano_publicacao, id_autor } = req.body;
 
-        if (!titulo || !ano_publicacao || !id_autor) {
-            return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+        if (!titulo) {
+            return res.status(400).json({ error: "O campo 'titulo' é obrigatório." });
+        }
+        if (!ano_publicacao) {
+            return res.status(400).json({ error: "O campo 'ano_publicacao' é obrigatório." });
+        }
+        if (!id_autor) {
+            return res.status(400).json({ error: "O campo 'id_autor' é obrigatório." });
+        }
+
+        // Verificar se o autor existe
+        const autorExiste = await autorModel.getAutorById(id_autor);
+        if (!autorExiste) {
+            return res.status(404).json({ error: "Autor não encontrado." });
         }
 
         const novoLivro = await livroModel.createLivro({ titulo, ano_publicacao, id_autor });
+        console.log("Livro criado:", novoLivro); // Log do livro criado
 
         res.status(201).json({
             message: "Livro criado com sucesso!",
             livro: novoLivro
         });
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao criar livro:", error); // Log do erro
         res.status(500).json({ error: "Erro ao criar livro." });
     }
 };

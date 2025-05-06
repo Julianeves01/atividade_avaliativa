@@ -1,6 +1,5 @@
 const PDFDocument = require("pdfkit"); // Importação do PDFKit
 const autorModel = require('../models/autorModel');
-const { generatePdfReport } = require("./reportController");
 
 const getAllAutores = async (req, res) => {
     try {
@@ -103,19 +102,46 @@ const deleteAutor = async (req, res) => {
 
 const generatePdfReportForAutores = async (req, res) => {
     try {
-        const autores = await autorModel.getAutores();
+        const autoresComLivros = await autorModel.getAutoresComLivros();
 
-        const autoresTratados = autores.map((item) => {
-            const nome = item.nome || "Não informado";
-            const nacionalidade = item.nacionalidade || "Não informada";
+        const doc = new PDFDocument({ margin: 50 });
+        let buffers = [];
 
-            return { nome, nacionalidade };
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => {
+            const pdfData = Buffer.concat(buffers);
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'inline; filename=relatorio_autores.pdf');
+            res.send(pdfData);
         });
 
-        generatePdfReport(res, autoresTratados, "Relatório de Autores");
+        doc.fontSize(20).font('Helvetica-Bold').text('Relatório de Autores e Livros', { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(12).font('Helvetica').text(`Data de geração: ${new Date().toLocaleDateString()}`, { align: 'right' });
+        doc.moveDown();
+
+
+        doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+        doc.moveDown();
+
+
+        autoresComLivros.forEach((autor) => {
+            doc.fontSize(14).font('Helvetica-Bold').text(`Autor: ${autor.nome} (${autor.nacionalidade || 'N/A'})`);
+            doc.fontSize(12).font('Helvetica').text(`Livro: ${autor.titulo || 'Nenhum livro cadastrado'}`);
+            doc.fontSize(12).font('Helvetica').text(`Ano de Publicação: ${autor.ano_publicacao || 'N/A'}`);
+            doc.moveDown();
+
+            doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+            doc.moveDown();
+        });
+
+        doc.moveDown(2);
+        doc.fontSize(10).font('Helvetica-Oblique').text('Relatório gerado automaticamente pelo sistema.', { align: 'center' });
+
+        doc.end();
     } catch (error) {
         console.error("Erro ao gerar relatório PDF:", error);
-        res.status(500).json({ message: "Erro ao gerar relatório PDF." });
+        res.status(500).send("Erro ao gerar relatório PDF");
     }
 };
 
@@ -125,5 +151,5 @@ module.exports = {
     createAutor,
     updateAutor,
     deleteAutor,
-    generatePdfReportForAutores, 
+    generatePdfReportForAutores,
 };
