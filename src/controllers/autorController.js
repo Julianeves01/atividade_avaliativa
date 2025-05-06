@@ -33,7 +33,7 @@ const createAutor = async (req, res) => {
             return res.status(400).json({ error: "Todos os campos são obrigatórios." });
         }
 
-        const novoAutor = await autorModel.createAutor({ nome, nacionalidade });
+        const novoAutor = await autorModel.createAutor({ nome, nacionalidade, photo });
 
         res.status(201).json({
             message: "Autor criado com sucesso!",

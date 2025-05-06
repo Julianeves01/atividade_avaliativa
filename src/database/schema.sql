@@ -1,5 +1,5 @@
-CREATE DATABASE biblioteca;
-\c biblioteca;
+CREATE DATABASE biblioteca_juss;
+\c biblioteca_juss;
 
 CREATE TABLE autores (
     id_autor SERIAL PRIMARY KEY,

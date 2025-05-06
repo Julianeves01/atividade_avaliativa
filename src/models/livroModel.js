@@ -14,7 +14,7 @@ const getLivroById = async (id_livro) => {
 
 const createLivro = async ({ titulo, ano_publicacao, id_autor }) => {
     const query = `
-        INSERT INTO livros (titulo, ano_publicacao, id_autor)
+        INSERT INTO livros (titulo, ano_publicacao, id_autor, photo)
         VALUES ($1, $2, $3)
         RETURNING *;
     `;

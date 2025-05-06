@@ -3,8 +3,8 @@ const autorModel = require("../models/autorModel");
 
 const createLivro = async (req, res) => {
     try {
-        console.log("Dados recebidos:", req.body); // Log dos dados recebidos
-        const { titulo, ano_publicacao, id_autor } = req.body;
+        console.log("Dados recebidos:", req.body); 
+        const { titulo, ano_publicacao, id_autor, photo } = req.body;
 
         if (!titulo) {
             return res.status(400).json({ error: "O campo 'titulo' é obrigatório." });
@@ -22,7 +22,7 @@ const createLivro = async (req, res) => {
             return res.status(404).json({ error: "Autor não encontrado." });
         }
 
-        const novoLivro = await livroModel.createLivro({ titulo, ano_publicacao, id_autor });
+        const novoLivro = await livroModel.createLivro({ titulo, ano_publicacao, id_autor, photo });
         console.log("Livro criado:", novoLivro); // Log do livro criado
 
         res.status(201).json({
@@ -64,7 +64,8 @@ const getLivro = async (req, res) => {
 const updateLivro = async (req, res) => {
     try {
         const { id } = req.params;
-        const { titulo, ano_publicacao, id_autor } = req.body;
+        const { titulo, ano_publicacao, id_autor
+        } = req.body;
 
         if (!titulo || !ano_publicacao || !id_autor) {
             return res.status(400).json({ error: "Todos os campos são obrigatórios." });

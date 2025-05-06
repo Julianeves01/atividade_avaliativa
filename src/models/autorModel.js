@@ -23,7 +23,7 @@ const getAutorById = async (id_autor) => {
 
 const createAutor = async ({ nome, nacionalidade }) => {
     const query = `
-        INSERT INTO autores (nome, nacionalidade)
+        INSERT INTO autores (nome, nacionalidade, photo)
         VALUES ($1, $2)
         RETURNING *;
     `;
