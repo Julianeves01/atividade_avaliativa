@@ -72,7 +72,7 @@ INSERT INTO autores (nome, nacionalidade) VALUES
 INSERT INTO livros (titulo, ano_publicacao, id_autor) VALUES
 ('Casos De Família - Arquivos Richthofen E Arquivos Nardoni', 2016, 1),
 ('Casamento Perfeito ', 2024, 2),
-('BTK Profile: Máscara da Maldade', 2019, 3);
+('BTK Profile: Máscara da Maldade', 2019, 3),
 ('Bom Dia, Verônica', 2016, 4),
 ('Dias Perfeitos', 2015, 5),
 ('A Hora da Estrela (Edição Especial Criminal)', 2017, 6),
